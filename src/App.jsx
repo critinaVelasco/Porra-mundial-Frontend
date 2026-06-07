@@ -23,8 +23,8 @@ function App() {
   const [ligaActivaId, setLigaActivaId] = useState(null);
 
   // URL base de tu servidor backend
-  const API_URL = 'http://localhost:5000/api';
-  // const API_URL = 'https://bright-hats-find.loca.lt/api'
+  //  const API_URL = 'http://localhost:5000/api';
+  const API_URL = 'https://porra-mundial-backend.onrender.com/api'
 
   // Manejar el inicio de sesión o registro real contra el backend
   const manejarSubmit = async (e) => {
@@ -102,8 +102,8 @@ function App() {
     setLigaActivaId(null);
   };
 
-    //    <button style={estilos.boton('clasificacion')} onClick={() => setPestanaActiva('clasificacion')}>📊 Grupos Mundial</button>
-    //    <button style={estilos.boton('partidos')} onClick={() => setPestanaActiva('partidos')}>⚽ Partidos</button>
+  //    <button style={estilos.boton('clasificacion')} onClick={() => setPestanaActiva('clasificacion')}>📊 Grupos Mundial</button>
+  //    <button style={estilos.boton('partidos')} onClick={() => setPestanaActiva('partidos')}>⚽ Partidos</button>
 
   return (
     <div>

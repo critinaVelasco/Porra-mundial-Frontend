@@ -15,8 +15,8 @@ function PanelAdmin({ username, estilos }) {
         pichichiEspaña: '',
     });
 
-    const API_URL = 'http://localhost:5000/api';
-    // const API_URL = 'https://rich-brooms-film.loca.lt/api'
+    //  const API_URL = 'http://localhost:5000/api';
+    const API_URL = 'https://porra-mundial-backend.onrender.com/api'
 
     // NUEVO ESTADO: Bloqueo de la porra
     const [bloqueado, setBloqueado] = useState(true);

@@ -5,7 +5,7 @@ function Ranking({ username, token, misLigasAmigos, setMisLigasAmigos, ligaActiv
     const [nuevaLigaId, setNuevaLigaId] = useState('');
     const [nombreNuevaPorra, setNombreNuevaPorra] = useState('');
     const [maxParticipantes, setMaxParticipantes] = useState(10);
-    const [error, setError] = useState(null); 
+    const [error, setError] = useState(null);
 
     const [mostrarOpcionesExtra, setMostrarOpcionesExtra] = useState(false);
     const [subVistaExtra, setSubVistaExtra] = useState('');
@@ -13,8 +13,8 @@ function Ranking({ username, token, misLigasAmigos, setMisLigasAmigos, ligaActiv
     // Estado para el ranking procesado que devuelve el servidor
     const [datosRankingActual, setDatosRankingActual] = useState(null);
 
-    const API_URL = 'http://localhost:5000/api/porras';
-    // const API_URL = 'https://rich-brooms-film.loca.lt/api/porras'
+    //  const API_URL = 'http://localhost:5000/api';
+    const API_URL = 'https://porra-mundial-backend.onrender.com/api'
 
     // 🔄 EFECTO 1: Cada vez que el usuario cambie de porra en el desplegable, pedimos el ranking al servidor
     useEffect(() => {
