@@ -14,7 +14,7 @@ function Ranking({ username, token, misLigasAmigos, setMisLigasAmigos, ligaActiv
     const [datosRankingActual, setDatosRankingActual] = useState(null);
 
     //  const API_URL = 'http://localhost:5000/api';
-    const API_URL = 'https://porra-mundial-backend.onrender.com/api/'
+    const API_URL = 'https://porra-mundial-backend.onrender.com/api'
 
     // 🔄 EFECTO 1: Cada vez que el usuario cambie de porra en el desplegable, pedimos el ranking al servidor
     useEffect(() => {
