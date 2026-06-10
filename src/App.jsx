@@ -139,6 +139,7 @@ function App() {
             {pestanaActiva === 'predicciones' && (
               <Predicciones
                 username={username}
+                token={token}
                 estilos={estilos}
               />
             )}
@@ -156,7 +157,13 @@ function App() {
               />
             )}
             {pestanaActiva === 'reglas' && <Reglas />}
-            {pestanaActiva === 'admin' && <PanelAdmin username={username} estilos={estilos} />}
+            {pestanaActiva === 'admin' &&
+              <PanelAdmin
+                username={username}
+                token={token}
+                estilos={estilos}
+              />
+            }
           </>
         )}
       </div>
