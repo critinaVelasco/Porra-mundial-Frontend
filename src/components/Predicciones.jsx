@@ -156,10 +156,10 @@ function Predicciones({ username, estilos }) {
     };
 
     const calcularPuntosPartido = (idPartido, pronosticoUsuario) => {
-        // Buscamos el resultado oficial del partido con ese ID
-        const oficial = resultadosOficiales.partidosPorra.find(p => Number(p.id) === Number(idPartido));
+        // Añadimos el ?. por si partidosPorra no ha cargado de la API
+        const oficial = resultadosOficiales.partidosPorra?.find(p => Number(p.id) === Number(idPartido));
 
-        // Si existe el resultado y coincide el pronóstico, devuelve 1 puntos
+        // Si existe el resultado y coincide el pronóstico, devuelve 1 punto
         if (oficial && pronosticoUsuario && oficial.pronostico === pronosticoUsuario) {
             return 1;
         }
@@ -225,6 +225,7 @@ function Predicciones({ username, estilos }) {
 
     // 4. Para los MEJORES TERCEROS
     const calcularPuntosTerceros = (indice, grupoUsuario, paisUsuario) => {
+        // Añadimos ?. también aquí para evitar futuros errores idénticos
         const oficial = resultadosOficiales.terceros?.[indice];
         if (!oficial || !grupoUsuario || !paisUsuario) return 0;
 
