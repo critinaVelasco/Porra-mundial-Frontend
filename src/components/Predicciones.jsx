@@ -234,15 +234,16 @@ function Predicciones({ username, token, estilos }) {
     };
 
     // 4. Para los MEJORES TERCEROS
-    const calcularPuntosTerceros = (indice, grupoUsuario, paisUsuario) => {
-        // Añadimos ?. también aquí para evitar futuros errores idénticos
-        const oficial = resultadosOficiales.terceros?.[indice];
-        if (!oficial || !grupoUsuario || !paisUsuario) return 0;
+    const calcularPuntosTerceros = (grupoUsuario, paisUsuario) => {
+        if (!grupoUsuario || !paisUsuario) return 0;
 
-        const aciertoGrupo = grupoUsuario === oficial.grupo;
-        const aciertoPais = paisUsuario.trim().toLowerCase() === oficial.pais.trim().toLowerCase();
+        const existeEnOficiales = resultadosOficiales.terceros?.some(
+            tercero =>
+                tercero.grupo === grupoUsuario &&
+                tercero.pais?.trim().toLowerCase() === paisUsuario.trim().toLowerCase()
+        );
 
-        return (aciertoGrupo && aciertoPais) ? 3 : 0;
+        return existeEnOficiales ? 3 : 0;
     };
 
     const calcularPuntosFaseFinal = (idCruce, ganadorUsuario, fase) => {
@@ -303,8 +304,8 @@ function Predicciones({ username, token, estilos }) {
         });
 
         // 6. Sumar Mejores Terceros
-        terceros.forEach((fila, index) => {
-            total += calcularPuntosTerceros(index, fila.grupo, fila.pais);
+        terceros.forEach((fila) => {
+            total += calcularPuntosTerceros(fila.grupo, fila.pais);
         });
 
         return total;
@@ -686,7 +687,7 @@ function Predicciones({ username, token, estilos }) {
 
                                 {/* Columna de puntos */}
                                 <div style={{ width: '40px', textAlign: 'right', fontWeight: 'bold', color: '#059669' }}>
-                                    {calcularPuntosTerceros(index, fila.grupo, fila.pais)}
+                                    {calcularPuntosTerceros(fila.grupo, fila.pais)}
                                 </div>
                             </div>
                         ))}
