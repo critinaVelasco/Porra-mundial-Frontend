@@ -299,30 +299,31 @@ function Ranking({ username, token, misLigasAmigos, setMisLigasAmigos, ligaActiv
                                     </tr>
                                 </thead>
                                 <tbody>
-									{/* 🛡️ Validamos con Array.isArray y encadenamiento opcional para evitar el crash */}
-									{Array.isArray(datosRankingActual?.ranking) ? (
-										datosRankingActual.ranking.map((miembro) => (
-											<tr key={miembro.usuario}>
-												<td style={estilosRanking.td}>{miembro.posicion}º</td>
-												<td style={{
-													...estilosRanking.td,
-													fontWeight: miembro.usuario === username ? 'bold' : 'normal',
-													color: miembro.usuario === username ? '#3b82f6' : '#111827'
-												}}>
-													{miembro.usuario} {miembro.usuario === username ? '(Tú)' : ''}
-												</td>
-												<td style={estilosRanking.td}>{miembro.puntos} pts</td>
-											</tr>
-										))
-									) : (
-										/* 💡 Si aún no hay array de ranking o se está cargando, mostramos una fila de aviso amigable */
-										<tr>
-											<td colSpan="3" style={{ textAlign: 'center', padding: '20px', color: '#6b7280' }}>
-												⏳ Cargando puntuaciones o liga sin participantes...
-											</td>
-										</tr>
-									)}
-								</tbody>
+                                   
+								// ✅ añadiendo el ? y validando que sea un Arrays
+								{Array.isArray(datosRankingActual?.ranking) && datosRankingActual.ranking.map((miembro) => (
+									<tr key={miembro.usuario}>
+										<td style={estilosRanking.td}>{miembro.posicion}º</td>
+										<td style={{
+											...estilosRanking.td,
+											fontWeight: miembro.usuario === username ? 'bold' : 'normal',
+											color: miembro.usuario === username ? '#3b82f6' : '#111827'
+										}}>
+											{miembro.usuario} {miembro.usuario === username ? '(Tú)' : ''}
+										</td>
+										<td style={estilosRanking.td}>{miembro.puntos} pts</td>
+									</tr>
+								))}
+
+								{/* 💡 Añade un mensaje elegante por si el ranking está vacío o falló */}
+								{(!datosRankingActual || !datosRankingActual.ranking) && (
+									<tr>
+										<td colSpan="3" style={{ textAlign: 'center', padding: '20px', color: '#6b7280' }}>
+											Cargando las puntuaciones del servidor...
+										</td>
+									</tr>
+								)}
+                                </tbody>
                             </table>
                         </div>
                     )}
