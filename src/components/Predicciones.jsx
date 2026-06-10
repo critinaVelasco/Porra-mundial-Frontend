@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-function Predicciones({ username, estilos }) {
+function Predicciones({ username, token, estilos }) {
     // ESTADOS
     const [partidosPorra, setPartidosPorra] = useState([]);
     const [grupos, setGrupos] = useState([]);
@@ -387,7 +387,10 @@ function Predicciones({ username, estilos }) {
 
             const response = await fetch(`${API_URL}/porra`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify(payload)
             });
 

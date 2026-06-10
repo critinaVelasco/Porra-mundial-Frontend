@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-function PanelAdmin({ username, estilos }) {
+function PanelAdmin({ username, token, estilos }) {
     // ESTADOS
     const [partidosPorra, setPartidosPorra] = useState([]);
     const [grupos, setGrupos] = useState([]);
@@ -221,7 +221,10 @@ function PanelAdmin({ username, estilos }) {
 
             const response = await fetch(`${API_URL}/admin/guardar-resultados-oficiales`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify(payload)
             });
 
