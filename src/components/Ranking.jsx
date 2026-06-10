@@ -299,8 +299,6 @@ function Ranking({ username, token, misLigasAmigos, setMisLigasAmigos, ligaActiv
                                     </tr>
                                 </thead>
                                 <tbody>
-                                   
-								// ✅ añadiendo el ? y validando que sea un Arrays
 								{Array.isArray(datosRankingActual?.ranking) && datosRankingActual.ranking.map((miembro) => (
 									<tr key={miembro.usuario}>
 										<td style={estilosRanking.td}>{miembro.posicion}º</td>
