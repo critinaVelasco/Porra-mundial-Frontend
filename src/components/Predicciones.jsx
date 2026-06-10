@@ -167,24 +167,34 @@ function Predicciones({ username, estilos }) {
     };
 
     const calcularPuntosEspaña = (idPartido, golesUsuarioLocal, golesUsuarioVisitante) => {
-        // Obtenemos el resultado oficial para este partido
-        const oficial = resultadosOficiales.golesEspaña[idPartido];
+        // 1. Obtenemos el resultado oficial para este partido
+        const oficial = resultadosOficiales?.golesEspaña?.[idPartido];
 
-        // Si no hay resultado oficial o el usuario no ha puesto goles, devuelve 0
-        if (!oficial || golesUsuarioLocal === '' || golesUsuarioVisitante === '') return 0;
+        // 2. Si el partido oficial no existe en el objeto, devolvemos 0
+        if (!oficial) return 0;
 
+        // 3. Validamos que existan tanto los goles oficiales como los del usuario y no sean cadenas vacías o undefined
+        if (
+            oficial.local === undefined || oficial.local === '' ||
+            oficial.visitante === undefined || oficial.visitante === '' ||
+            golesUsuarioLocal === undefined || golesUsuarioLocal === '' ||
+            golesUsuarioVisitante === undefined || golesUsuarioVisitante === ''
+        ) {
+            return 0; // Si falta cualquier dato, no se calculan puntos aún
+        }
+
+        // 4. Convertimos de forma segura a números
         const uLocal = Number(golesUsuarioLocal);
         const uVisitante = Number(golesUsuarioVisitante);
         const oLocal = Number(oficial.local);
         const oVisitante = Number(oficial.visitante);
 
-        // 1. Regla: Resultado exacto (5 puntos)
+        // 5. Regla: Resultado exacto (5 puntos)
         if (uLocal === oLocal && uVisitante === oVisitante) {
             return 5;
         }
 
-        // 2. Regla: Diferencia de goles (3 puntos)
-        // Se calcula restando los goles local menos los visitante en ambos casos
+        // 6. Regla: Diferencia de goles (3 puntos)
         const diffUsuario = uLocal - uVisitante;
         const diffOficial = oLocal - oVisitante;
 
