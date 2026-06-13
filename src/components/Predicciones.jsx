@@ -457,9 +457,12 @@ function Predicciones({ username, token, estilos, esSoloLectura = false }) {
                     {/* Ocultamos el saludo si estamos en modo lectura */}
                     {!esSoloLectura && <h2>👋 ¡Hola, {username}!</h2>}
 
-                    <p style={{ color: bloqueado ? '#6B7280' : '#10b981', fontWeight: 'bold' }}>
-                        {bloqueado ? '🔒 Porra Guardada (Modo Lectura)' : '📝 Porra en Edición...'}
-                    </p>
+                    {/* Ocultamos todo el párrafo de estado si estamos en modo lectura */}
+                    {!esSoloLectura && (
+                        <p style={{ color: bloqueado ? '#6B7280' : '#10b981', fontWeight: 'bold' }}>
+                            {bloqueado ? '🔒 Porra Guardada (Modo Lectura)' : '📝 Porra en Edición...'}
+                        </p>
+                    )}
                 </div>
 
                 {/* Ocultamos los botones de control si estamos en modo solo lectura */}
