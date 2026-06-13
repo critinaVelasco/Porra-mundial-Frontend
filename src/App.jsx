@@ -130,7 +130,7 @@ function App() {
             setUsernameInput={setUsernameInput}
             password={password}
             setPassword={setPassword}
-            manejarSubmit={manejarSubmit} X
+            manejarSubmit={manejarSubmit}
             estilos={estilos}
           />
         ) : (
