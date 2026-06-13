@@ -55,6 +55,7 @@ function VerPorras({ estilos }) {
                         username={usuarioBuscado} 
                         token={null} // Al ser solo lectura, no enviamos token
                         estilos={estilos}
+                        esSoloLectura={true}
                     />
                 </div>
             )}

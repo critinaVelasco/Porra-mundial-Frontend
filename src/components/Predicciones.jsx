@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-function Predicciones({ username, token, estilos }) {
+function Predicciones({ username, token, estilos, esSoloLectura = false }) {
     // ESTADOS
     const [partidosPorra, setPartidosPorra] = useState([]);
     const [grupos, setGrupos] = useState([]);
@@ -40,7 +40,7 @@ function Predicciones({ username, token, estilos }) {
 
     // COMPROBACIÓN DE FECHA LÍMITE
     // Ajusta el año si es necesario (he puesto 2026 como ejemplo)
-    const fechaLimite = new Date('2026-06-11T21:29:59');
+    const fechaLimite = new Date('2026-06-11T19:59:59');
     const ahora = new Date();
     const dentroDePlazo = ahora <= fechaLimite;
 
@@ -347,7 +347,9 @@ function Predicciones({ username, token, estilos }) {
                         if (dataPorra.terceros) setTerceros(dataPorra.terceros);
                         if (dataPorra.ganadoresFaseFinal) setGanadoresFaseFinal(dataPorra.ganadoresFaseFinal);
                         if (dataPorra.golesEspaña) setGolesEspaña(dataPorra.golesEspaña);
-                        if (dataPorra.partidosFinal) {setPartidosFinal(dataPorra.partidosFinal);}
+                        if (dataPorra.partidosFinal) {
+                            setPartidosFinal(dataPorra.partidosFinal);
+                        }
                         setPrediccionesExtra({
                             pichichiMundial: dataPorra.pichichiMundial || '',
                             pichichiEspaña: dataPorra.pichichiEspaña || ''
@@ -452,26 +454,30 @@ function Predicciones({ username, token, estilos }) {
         <div style={{ marginTop: '20px' }}>
             <div style={estilos1X2.cabecera}>
                 <div>
-                    <h2>👋 ¡Hola, {username}!</h2>
+                    {/* Ocultamos el saludo si estamos en modo lectura */}
+                    {!esSoloLectura && <h2>👋 ¡Hola, {username}!</h2>}
+
                     <p style={{ color: bloqueado ? '#6B7280' : '#10b981', fontWeight: 'bold' }}>
                         {bloqueado ? '🔒 Porra Guardada (Modo Lectura)' : '📝 Porra en Edición...'}
                     </p>
                 </div>
 
-                {/* BOTÓN MODIFICAR (Solo si está dentro de plazo y bloqueado) */}
-                {dentroDePlazo ? (
-                    bloqueado && (
-                        <button
-                            onClick={() => setBloqueado(false)}
-                            style={{ background: '#3b82f6', color: 'white', padding: '10px 15px', borderRadius: '8px', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}
-                        >
-                            ✏️ Modificar Porra
-                        </button>
+                {/* Ocultamos los botones de control si estamos en modo solo lectura */}
+                {!esSoloLectura && (
+                    dentroDePlazo ? (
+                        bloqueado && (
+                            <button
+                                onClick={() => setBloqueado(false)}
+                                style={{ background: '#3b82f6', color: 'white', padding: '10px 15px', borderRadius: '8px', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}
+                            >
+                                ✏️ Modificar Porra
+                            </button>
+                        )
+                    ) : (
+                        <span style={{ color: '#ef4444', fontWeight: 'bold', padding: '10px', background: '#FEE2E2', borderRadius: '8px' }}>
+                            ⏳ Plazo finalizado
+                        </span>
                     )
-                ) : (
-                    <span style={{ color: '#ef4444', fontWeight: 'bold', padding: '10px', background: '#FEE2E2', borderRadius: '8px' }}>
-                        ⏳ Plazo finalizado
-                    </span>
                 )}
             </div>
 
