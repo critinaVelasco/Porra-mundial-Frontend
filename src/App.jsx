@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Predicciones from './components/Predicciones';
-import Clasificacion from './components/Clasificacion';
-import Partidos from './components/Partidos';
 import Ranking from './components/Ranking';
 import Reglas from './components/Reglas';
 import LoginForm from './components/LoginForm';
 import PanelAdmin from './components/PanelAdmin';
+import VerPorras from './components/VerPorras';
 
 function App() {
   const [pestanaActiva, setPestanaActiva] = useState('predicciones');
@@ -111,6 +110,7 @@ function App() {
       <nav style={estilos.nav}>
         <button style={estilos.boton('predicciones')} onClick={() => setPestanaActiva('predicciones')}>📝 Mis Predicciones</button>
         <button style={estilos.boton('ranking')} onClick={() => setPestanaActiva('ranking')}>🏆 Ranking Porra</button>
+        <button style={estilos.boton('porras')} onClick={() => setPestanaActiva('porras')}>📁 Ver Porras</button>
         <button style={estilos.boton('reglas')} onClick={() => setPestanaActiva('reglas')}>📜 Reglas</button>
         {usuarioLogueado && <button onClick={cerrarSesion} style={{ ...estilos.boton('salir'), color: '#ef4444' }}>🚪 Salir</button>}
         {usuarioLogueado && username === 'admin' && (
@@ -156,6 +156,7 @@ function App() {
                 estilosGlobales={estilos}
               />
             )}
+            {pestanaActiva === 'porras' && <VerPorras />}
             {pestanaActiva === 'reglas' && <Reglas />}
             {pestanaActiva === 'admin' &&
               <PanelAdmin
