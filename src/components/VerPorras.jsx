@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Predicciones from './Predicciones'; // Reutilizamos el componente lógico
+import Predicciones from './Predicciones';
 
 function VerPorras({ estilos }) {
     const [busqueda, setBusqueda] = useState('');
@@ -8,7 +8,10 @@ function VerPorras({ estilos }) {
 
     const API_URL = 'https://porra-mundial-backend.onrender.com/api';
 
-    const buscarPorra = async () => {
+    const buscarPorra = async (e) => {
+        // Prevenimos que el formulario recargue la página al pulsar Intro
+        if (e) e.preventDefault(); 
+        
         if (!busqueda) return;
         setCargando(true);
         try {
@@ -33,8 +36,11 @@ function VerPorras({ estilos }) {
 
     return (
         <div style={{ padding: '20px' }}>
-            {/* Buscador */}
-            <div style={{ background: '#f3f4f6', padding: '20px', borderRadius: '8px', marginBottom: '20px', display: 'flex', gap: '10px' }}>
+            {/* 1. Hemos envuelto el contenido en un <form> */}
+            <form 
+                onSubmit={buscarPorra} 
+                style={{ background: '#f3f4f6', padding: '20px', borderRadius: '8px', marginBottom: '20px', display: 'flex', gap: '10px' }}
+            >
                 <input
                     type="text"
                     placeholder="Escribe el nombre de usuario..."
@@ -42,18 +48,22 @@ function VerPorras({ estilos }) {
                     onChange={(e) => setBusqueda(e.target.value)}
                     style={{ flex: 1, padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}
                 />
-                <button onClick={buscarPorra} style={{ padding: '10px 20px', background: '#3b82f6', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
+                {/* 2. El botón ahora funciona como disparador del form (type="submit") */}
+                <button 
+                    type="submit" 
+                    style={{ padding: '10px 20px', background: '#3b82f6', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                >
                     {cargando ? 'Buscando...' : '🔍 Buscar'}
                 </button>
-            </div>
+            </form>
 
-            {/* Resultado: Reutilizamos Predicciones pasándole el usuario encontrado */}
+            {/* Resultado */}
             {usuarioBuscado && (
                 <div style={{ border: '2px solid #3b82f6', padding: '20px', borderRadius: '10px' }}>
                     <h2 style={{ textAlign: 'center' }}>Porra de {usuarioBuscado}</h2>
                     <Predicciones 
                         username={usuarioBuscado} 
-                        token={null} // Al ser solo lectura, no enviamos token
+                        token={null} 
                         estilos={estilos}
                         esSoloLectura={true}
                     />
