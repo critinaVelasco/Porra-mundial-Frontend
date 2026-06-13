@@ -8,4 +8,4 @@ function VerPorras() {
     );
 }
 
-export default Reglas;
+export default VerPorras;
