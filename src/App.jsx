@@ -5,6 +5,8 @@ import Reglas from './components/Reglas';
 import LoginForm from './components/LoginForm';
 import PanelAdmin from './components/PanelAdmin';
 import VerPorras from './components/VerPorras';
+import Clasificacion from './components/Clasificacion';
+import Partidos from './components/Partidos';
 
 function App() {
   const [pestanaActiva, setPestanaActiva] = useState('predicciones');
