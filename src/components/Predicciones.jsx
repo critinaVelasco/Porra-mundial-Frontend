@@ -347,10 +347,7 @@ function Predicciones({ username, token, estilos }) {
                         if (dataPorra.terceros) setTerceros(dataPorra.terceros);
                         if (dataPorra.ganadoresFaseFinal) setGanadoresFaseFinal(dataPorra.ganadoresFaseFinal);
                         if (dataPorra.golesEspaña) setGolesEspaña(dataPorra.golesEspaña);
-                        if (dataPorra.partidosFinal) {
-                            setPartidosFinal(dataPorra.partidosFinal);
-                            setSeccionesVisibles(prev => ({ ...prev, faseFinal: true }));
-                        }
+                        if (dataPorra.partidosFinal) {setPartidosFinal(dataPorra.partidosFinal);}
                         setPrediccionesExtra({
                             pichichiMundial: dataPorra.pichichiMundial || '',
                             pichichiEspaña: dataPorra.pichichiEspaña || ''
