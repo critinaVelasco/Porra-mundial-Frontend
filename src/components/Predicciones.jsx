@@ -156,13 +156,20 @@ function Predicciones({ username, token, estilos, esSoloLectura = false }) {
     };
 
     const calcularPuntosPartido = (idPartido, pronosticoUsuario) => {
-        // Añadimos el ?. por si partidosPorra no ha cargado de la API
+        // Buscamos el resultado oficial del partido
         const oficial = resultadosOficiales.partidosPorra?.find(p => Number(p.id) === Number(idPartido));
 
-        // Si existe el resultado y coincide el pronóstico, devuelve 1 punto
-        if (oficial && pronosticoUsuario && oficial.pronostico === pronosticoUsuario) {
+        // 1. Si no existe un resultado oficial cargado por el admin, devolvemos '-'
+        if (!oficial || !oficial.pronostico) {
+            return '-';
+        }
+
+        // 2. Si existe el resultado y coincide el pronóstico, devuelve 1 punto
+        if (pronosticoUsuario && oficial.pronostico === pronosticoUsuario) {
             return 1;
         }
+
+        // 3. Si el resultado oficial existe pero el pronóstico es incorrecto, entonces sí devuelve 0
         return 0;
     };
 
