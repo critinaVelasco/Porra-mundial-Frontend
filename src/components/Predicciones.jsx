@@ -155,6 +155,17 @@ function Predicciones({ username, token, estilos, esSoloLectura = false }) {
         }));
     };
 
+    const calcularPuntosPartido_cabecera = (idPartido, pronosticoUsuario) => {
+        // Añadimos el ?. por si partidosPorra no ha cargado de la API
+        const oficial = resultadosOficiales.partidosPorra?.find(p => Number(p.id) === Number(idPartido));
+
+        // Si existe el resultado y coincide el pronóstico, devuelve 1 punto
+        if (oficial && pronosticoUsuario && oficial.pronostico === pronosticoUsuario) {
+            return 1;
+        }
+        return 0;
+    };
+
     const calcularPuntosPartido = (idPartido, pronosticoUsuario) => {
         // Buscamos el resultado oficial del partido
         const oficial = resultadosOficiales.partidosPorra?.find(p => Number(p.id) === Number(idPartido));
@@ -287,7 +298,7 @@ function Predicciones({ username, token, estilos, esSoloLectura = false }) {
 
         // 2. Sumar Fase de Grupos
         partidosPorra.forEach(p => {
-            total += calcularPuntosPartido(p.id, p.pronostico);
+            total += calcularPuntosPartido_cabecera(p.id, p.pronostico);
         });
 
         // 3. Sumar España
