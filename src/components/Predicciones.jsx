@@ -40,7 +40,7 @@ function Predicciones({ username, token, estilos, esSoloLectura = false }) {
 
     // COMPROBACIÓN DE FECHA LÍMITE
     // Ajusta el año si es necesario (he puesto 2026 como ejemplo)
-    const fechaLimite = new Date('2026-06-11T19:59:59');
+    const fechaLimite = new Date('2026-07-11T19:59:59');
     const ahora = new Date();
     const dentroDePlazo = ahora <= fechaLimite;
 
