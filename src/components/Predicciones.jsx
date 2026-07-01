@@ -330,64 +330,74 @@ function Predicciones({ username, token, estilos, esSoloLectura = false }) {
     };
 
     // 1. CARGA DE DATOS
-    useEffect(() => {
-        const cargarTodo = async () => {
-            try {
-                const resPartidos = await fetch(`${API_URL}/partidos`);
-                const dataGrupos = await resPartidos.json();
+    // 1. CARGA DE DATOS
+useEffect(() => {
+    const cargarTodo = async () => {
+        try {
+            const resPartidos = await fetch(`${API_URL}/partidos`);
+            const dataGrupos = await resPartidos.json();
 
-                const resFinal = await fetch(`${API_URL}/partidosFinal`);
-                const dataFinal = await resFinal.json();
+            const resFinal = await fetch(`${API_URL}/partidosFinal`);
+            const dataFinal = await resFinal.json();
 
-                setGrupos(dataGrupos);
-                setPartidosFinal(dataFinal.faseFinal || dataFinal[0]?.faseFinal);
+            setGrupos(dataGrupos);
+            setPartidosFinal(dataFinal.faseFinal || dataFinal[0]?.faseFinal);
 
-                const listaPlana = dataGrupos.flatMap(grupo =>
-                    grupo.partidos.map(p => ({ id: p.id, equipoA: p.equipoLocal, equipoB: p.equipoVisitante, pronostico: '' }))
-                );
-                const filtrados = dataGrupos.flatMap(g => g.partidos).filter(p => p.equipoLocal === 'España' || p.equipoVisitante === 'España');
-                setPartidosEspaña(filtrados);
+            const listaPlana = dataGrupos.flatMap(grupo =>
+                grupo.partidos.map(p => ({ id: p.id, equipoA: p.equipoLocal, equipoB: p.equipoVisitante, pronostico: '' }))
+            );
+            const filtrados = dataGrupos.flatMap(g => g.partidos).filter(p => p.equipoLocal === 'España' || p.equipoVisitante === 'España');
+            setPartidosEspaña(filtrados);
 
-                const resPorra = await fetch(`${API_URL}/porra/${username}`);
+            const resPorra = await fetch(`${API_URL}/porra/${username}`);
 
-                const resAdmin = await fetch(`${API_URL}/admin/resultados`);
-                if (resAdmin.ok) {
-                    const dataAdmin = await resAdmin.json();
-                    setResultadosOficiales(dataAdmin);
-                }
+            const resAdmin = await fetch(`${API_URL}/admin/resultados`);
+            if (resAdmin.ok) {
+                const dataAdmin = await resAdmin.json();
+                setResultadosOficiales(dataAdmin);
+            }
 
-                if (resPorra.ok) {
-                    const dataPorra = await resPorra.json();
+            if (resPorra.ok) {
+                const dataPorra = await resPorra.json();
 
-                    if (Object.keys(dataPorra).length > 0) {
-                        setPartidosPorra(dataPorra.partidosPorra || listaPlana);
-                        if (dataPorra.clasificaciones) setClasificaciones(dataPorra.clasificaciones);
-                        if (dataPorra.terceros) setTerceros(dataPorra.terceros);
-                        if (dataPorra.ganadoresFaseFinal) setGanadoresFaseFinal(dataPorra.ganadoresFaseFinal);
-                        if (dataPorra.golesEspaña) setGolesEspaña(dataPorra.golesEspaña);
-                        if (dataPorra.partidosFinal) {
-                            setPartidosFinal(dataPorra.partidosFinal);
-                        }
-                        setPrediccionesExtra({
-                            pichichiMundial: dataPorra.pichichiMundial || '',
-                            pichichiEspaña: dataPorra.pichichiEspaña || ''
-                        });
+                if (Object.keys(dataPorra).length > 0) {
+                    setPartidosPorra(dataPorra.partidosPorra || listaPlana);
+                    if (dataPorra.clasificaciones) setClasificaciones(dataPorra.clasificaciones);
+                    
+                    // Aseguramos que terceros sea siempre un array de 8
+                    if (dataPorra.terceros && Array.isArray(dataPorra.terceros)) {
+                        setTerceros(dataPorra.terceros);
                     } else {
-                        setPartidosPorra(listaPlana);
+                        setTerceros(Array(8).fill({ grupo: '', pais: '' }));
                     }
+
+                    if (dataPorra.ganadoresFaseFinal) setGanadoresFaseFinal(dataPorra.ganadoresFaseFinal);
+                    if (dataPorra.golesEspaña) setGolesEspaña(dataPorra.golesEspaña);
+                    if (dataPorra.partidosFinal) {
+                        setPartidosFinal(dataPorra.partidosFinal);
+                    }
+                    setPrediccionesExtra({
+                        pichichiMundial: dataPorra.pichichiMundial || '',
+                        pichichiEspaña: dataPorra.pichichiEspaña || ''
+                    });
                 } else {
                     setPartidosPorra(listaPlana);
                 }
-            } catch (error) {
-                console.error("Error al cargar los datos:", error);
+            } else {
+                setPartidosPorra(listaPlana);
             }
-        };
-
-        if (username) {
-            cargarTodo();
+        } catch (error) {
+            console.error("Error al cargar los datos:", error);
         }
-    }, [username]);
+    };
 
+    if (username) {
+        cargarTodo();
+    }
+}, [username]);
+
+
+    
     // 2. GUARDADO DE DATOS
     const guardarPorra = async () => {
         try {
