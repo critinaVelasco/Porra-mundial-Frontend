@@ -710,11 +710,14 @@ useEffect(() => {
                                         .flatMap(p => [p.equipoLocal, p.equipoVisitante])
                                         .filter((v, i, a) => a.indexOf(v) === i) // Elimina duplicados base de los partidos
                                         .filter(pais => {
-                                            // Obtenemos los equipos guardados en el 1º y 2º puesto del grupo actual
                                             const elegidosGrupo = Object.values(clasificaciones[fila.grupo] || {});
-                                            // Solo permitimos mostrar el país si NO está incluido en esos dos puestos
+                                            // Si el país es el que ya tenemos seleccionado como tercero, DEJAMOS QUE SE MUESTRE
+                                            if (pais === fila.pais) return true; 
+                                            
+                                            // Si no, aplicamos la regla normal: ocultarlo si está 1º o 2º
                                             return !elegidosGrupo.includes(pais);
                                         })
+
                                         .map(pais => <option key={pais} value={pais}>{pais}</option>)
                                     }
                                 </select>
