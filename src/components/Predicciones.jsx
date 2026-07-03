@@ -264,12 +264,20 @@ function Predicciones({ username, token, estilos, esSoloLectura = false }) {
         return existeEnOficiales ? 3 : 0;
     };
 
-    const calcularPuntosFaseFinal = (idCruce, ganadorUsuario, fase) => {
-        const ganadorOficial = resultadosOficiales.ganadoresFaseFinal?.[idCruce];
-        if (!ganadorOficial || !ganadorUsuario) return 0;
+    // NUEVO: Añadimos 'listaPartidosFase' como cuarto parámetro
+    const calcularPuntosFaseFinal = (ganadorUsuario, fase, listaPartidosFase) => {
+        if (!ganadorUsuario) return 0;
 
-        // Comparamos el ganador
-        const esAcierto = ganadorUsuario.trim().toLowerCase() === ganadorOficial.trim().toLowerCase();
+        // 1. Recopilamos todos los ganadores oficiales de esta fase específica
+        const ganadoresOficialesFase = listaPartidosFase
+            .map(partido => resultadosOficiales.ganadoresFaseFinal?.[partido.id])
+            .filter(Boolean) // Eliminamos los nulos/indefinidos
+            .map(equipo => equipo.trim().toLowerCase());
+
+        const ganadorUsuarioNormalizado = ganadorUsuario.trim().toLowerCase();
+
+        // 2. Comprobamos si el equipo elegido por el usuario está entre los que avanzaron
+        const esAcierto = ganadoresOficialesFase.includes(ganadorUsuarioNormalizado);
 
         if (!esAcierto) return 0;
 
@@ -307,12 +315,31 @@ function Predicciones({ username, token, estilos, esSoloLectura = false }) {
             total += calcularPuntosEspaña(id, goles.local, goles.visitante);
         });
 
-        // 4. Sumar Fase Final
-        Object.entries(partidosFinal || {}).forEach(([fase, lista]) => {
-            lista.forEach(p => {
-                total += calcularPuntosFaseFinal(p.id, ganadoresFaseFinal[p.id], fase);
-            });
-        });
+       // 4. Sumar Fase Final
+Object.entries(partidosFinal || {}).forEach(([fase, lista]) => {
+    // Set para evitar que se sumen puntos dobles si el usuario repite un equipo
+    const aciertosContabilizados = new Set();
+
+    lista.forEach(p => {
+        const ganadorUsuario = ganadoresFaseFinal[p.id];
+
+        if (ganadorUsuario) {
+            const ganadorNormalizado = ganadorUsuario.trim().toLowerCase();
+
+            // Solo sumamos si este equipo NO ha sumado puntos ya en esta fase
+            if (!aciertosContabilizados.has(ganadorNormalizado)) {
+                
+                // ASÍ LLAMAS A LA NUEVA FUNCIÓN (sin el ID, y añadiendo 'lista')
+                const puntos = calcularPuntosFaseFinal(ganadorUsuario, fase, lista);
+
+                if (puntos > 0) {
+                    total += puntos;
+                    aciertosContabilizados.add(ganadorNormalizado); // Lo marcamos como puntuado
+                }
+            }
+        }
+    });
+});
 
         // 5. Sumar Clasificaciones de Grupos
         Object.keys(clasificaciones).forEach(grupo => {
@@ -329,7 +356,6 @@ function Predicciones({ username, token, estilos, esSoloLectura = false }) {
         return total;
     };
 
-    // 1. CARGA DE DATOS
     // 1. CARGA DE DATOS
 useEffect(() => {
     const cargarTodo = async () => {
@@ -781,8 +807,10 @@ useEffect(() => {
                                         </div>
                                         {/* Columna de puntos */}
                                         <div style={{ width: '40px', textAlign: 'right', fontWeight: 'bold', color: '#059669' }}>
-                                            {calcularPuntosFaseFinal(p.id, ganadoresFaseFinal[p.id],
-                                                fase // <--- Pasamos la fase actual del bucle
+                                            {calcularPuntosFaseFinal(
+                                                ganadoresFaseFinal[p.id],
+                                                fase, 
+                                                listaPartidos // <--- Pasamos el array completo de partidos de esta fase
                                             )}
                                         </div>
                                     </div>
