@@ -372,7 +372,15 @@ useEffect(() => {
             const listaPlana = dataGrupos.flatMap(grupo =>
                 grupo.partidos.map(p => ({ id: p.id, equipoA: p.equipoLocal, equipoB: p.equipoVisitante, pronostico: '' }))
             );
-            const filtrados = dataGrupos.flatMap(g => g.partidos).filter(p => p.equipoLocal === 'España' || p.equipoVisitante === 'España');
+            
+            const todosLosPartidos = dataGrupos.flatMap(grupo => grupo.partidos);
+
+            // Filtramos eliminando posibles espacios en blanco invisibles de la base de datos (.trim())
+            const filtrados = todosLosPartidos.filter(p => 
+                (p.equipoLocal && p.equipoLocal.trim() === 'España') || 
+                (p.equipoVisitante && p.equipoVisitante.trim() === 'España')
+            );
+            
             setPartidosEspaña(filtrados);
 
             const resPorra = await fetch(`${API_URL}/porra/${username}`);
@@ -873,3 +881,4 @@ useEffect(() => {
 }
 
 export default Predicciones;
+
