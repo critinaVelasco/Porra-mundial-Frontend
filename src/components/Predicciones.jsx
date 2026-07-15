@@ -148,12 +148,20 @@ function Predicciones({ username, token, estilos, esSoloLectura = false }) {
     };
 
     const manejarGolesEspaña = (idPartido, tipo, valor) => {
-        if (bloqueado) return;
-        setGolesEspaña(prev => ({
+    if (bloqueado) return;[cite: 2]
+    
+    setGolesEspaña(prev => {
+        // Nos aseguramos de mantener lo que ya había para ese partido o inicializarlo vacío
+        const partidoActual = prev[idPartido] || { local: '', visitante: '' }; 
+        return {
             ...prev,
-            [idPartido]: { ...prev[idPartido], [tipo]: valor }
-        }));
-    };
+            [idPartido]: { 
+                ...partidoActual, 
+                [tipo]: valor 
+            }
+        };
+    });
+};
 
     const calcularPuntosPartido_cabecera = (idPartido, pronosticoUsuario) => {
         // Añadimos el ?. por si partidosPorra no ha cargado de la API
@@ -634,7 +642,7 @@ useEffect(() => {
                                         min="0"
                                         placeholder="-"
                                         disabled={bloqueado}
-                                        value={golesEspaña[p.id]?.local || ''}
+                                        value={golesEspaña[p.id]?.local ?? golesEspaña[String(p.id)]?.local ?? ''}
                                         style={{ width: '40px', padding: '8px', textAlign: 'center', borderRadius: '4px', border: '1px solid #ccc', background: bloqueado ? '#f3f4f6' : 'white' }}
                                         onChange={(e) => manejarGolesEspaña(p.id, 'local', e.target.value)}
                                     />
@@ -644,7 +652,7 @@ useEffect(() => {
                                         min="0"
                                         placeholder="-"
                                         disabled={bloqueado}
-                                        value={golesEspaña[p.id]?.visitante || ''}
+                                        value={golesEspaña[p.id]?.visitante ?? golesEspaña[String(p.id)]?.visitante ?? ''}
                                         style={{ width: '40px', padding: '8px', textAlign: 'center', borderRadius: '4px', border: '1px solid #ccc', background: bloqueado ? '#f3f4f6' : 'white' }}
                                         onChange={(e) => manejarGolesEspaña(p.id, 'visitante', e.target.value)}
                                     />
@@ -881,4 +889,5 @@ useEffect(() => {
 }
 
 export default Predicciones;
+
 
