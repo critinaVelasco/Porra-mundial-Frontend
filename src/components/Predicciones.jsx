@@ -148,14 +148,13 @@ function Predicciones({ username, token, estilos, esSoloLectura = false }) {
     };
 
     const manejarGolesEspaña = (idPartido, tipo, valor) => {
-        if (bloqueado) return;
-        
+    if (bloqueado) return;
         setGolesEspaña(prev => {
-            // Nos aseguramos de mantener lo que ya había para ese partido o inicializarlo vacío
-            const partidoActual = prev[idPartido] || { local: '', visitante: '' }; 
+            const idString = String(idPartido); // Aseguramos clave string
+            const partidoActual = prev[idString] || { local: '', visitante: '' }; 
             return {
                 ...prev,
-                [idPartido]: { 
+                [idString]: { 
                     ...partidoActual, 
                     [tipo]: valor 
                 }
