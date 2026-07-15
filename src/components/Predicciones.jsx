@@ -641,9 +641,10 @@ useEffect(() => {
                                         min="0"
                                         placeholder="-"
                                         disabled={bloqueado}
-                                        value={golesEspaña[p.id]?.local ?? golesEspaña[String(p.id)]?.local ?? ''}
+                                        // Forzamos el ID a String para que coincida exactamente con cómo viene de MongoDB/Firebase
+                                        value={golesEspaña[String(p.id)]?.local ?? ''}
                                         style={{ width: '40px', padding: '8px', textAlign: 'center', borderRadius: '4px', border: '1px solid #ccc', background: bloqueado ? '#f3f4f6' : 'white' }}
-                                        onChange={(e) => manejarGolesEspaña(p.id, 'local', e.target.value)}
+                                        onChange={(e) => manejarGolesEspaña(String(p.id), 'local', e.target.value)}
                                     />
                                     <span style={{ fontSize: '20px', fontWeight: 'bold' }}>-</span>
                                     <input
@@ -651,9 +652,9 @@ useEffect(() => {
                                         min="0"
                                         placeholder="-"
                                         disabled={bloqueado}
-                                        value={golesEspaña[p.id]?.visitante ?? golesEspaña[String(p.id)]?.visitante ?? ''}
+                                        value={golesEspaña[String(p.id)]?.visitante ?? ''}
                                         style={{ width: '40px', padding: '8px', textAlign: 'center', borderRadius: '4px', border: '1px solid #ccc', background: bloqueado ? '#f3f4f6' : 'white' }}
-                                        onChange={(e) => manejarGolesEspaña(p.id, 'visitante', e.target.value)}
+                                        onChange={(e) => manejarGolesEspaña(String(p.id), 'visitante', e.target.value)}
                                     />
                                 </div>
 
