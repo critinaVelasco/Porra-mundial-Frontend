@@ -148,21 +148,20 @@ function Predicciones({ username, token, estilos, esSoloLectura = false }) {
     };
 
     const manejarGolesEspaña = (idPartido, tipo, valor) => {
-    if (bloqueado) return;[cite: 2]
-    
-    setGolesEspaña(prev => {
-        // Nos aseguramos de mantener lo que ya había para ese partido o inicializarlo vacío
-        const partidoActual = prev[idPartido] || { local: '', visitante: '' }; 
-        return {
-            ...prev,
-            [idPartido]: { 
-                ...partidoActual, 
-                [tipo]: valor 
-            }
-        };
-    });
-};
-
+        if (bloqueado) return;
+        
+        setGolesEspaña(prev => {
+            // Nos aseguramos de mantener lo que ya había para ese partido o inicializarlo vacío
+            const partidoActual = prev[idPartido] || { local: '', visitante: '' }; 
+            return {
+                ...prev,
+                [idPartido]: { 
+                    ...partidoActual, 
+                    [tipo]: valor 
+                }
+            };
+        });
+    };
     const calcularPuntosPartido_cabecera = (idPartido, pronosticoUsuario) => {
         // Añadimos el ?. por si partidosPorra no ha cargado de la API
         const oficial = resultadosOficiales.partidosPorra?.find(p => Number(p.id) === Number(idPartido));
